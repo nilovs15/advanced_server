@@ -10,21 +10,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    public SecurityConfig(JWTUtil jwtUtil) {
+    public SecurityConfig(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.httpBasic().disable()
+        httpSecurity
+                .httpBasic().disable()
+                .csrf().disable()
                 .authorizeRequests()
                 .anyRequest()
-                .permitAll()
-                .and()
-                .csrf()
-                .disable();
+                .permitAll();
         return httpSecurity.build();
     }
 

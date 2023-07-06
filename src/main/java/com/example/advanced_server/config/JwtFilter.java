@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class JWTFilter extends OncePerRequestFilter {
-    private final JWTUtil jwtUtil;
+public class JwtFilter extends OncePerRequestFilter {
+    private final JwtUtil jwtUtil;
     private final PersonDetailsService personDetailsService;
 
-    public JWTFilter(JWTUtil jwtUtil, UserRepository userRepository, PersonDetailsService personDetailsService, PersonDetailsService personDetailsService1) {
+    public JwtFilter(JwtUtil jwtUtil, UserRepository userRepository, PersonDetailsService personDetailsService, PersonDetailsService personDetailsService1) {
         this.jwtUtil = jwtUtil;
         this.personDetailsService = personDetailsService;
     }

@@ -41,3 +41,4 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application-*.properties
+application-dev .properties

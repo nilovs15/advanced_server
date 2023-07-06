@@ -10,9 +10,11 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 
 @RestControllerAdvice
 public class AppExceptionHandler {
@@ -56,6 +58,13 @@ public class AppExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleErrors(IllegalArgumentException exception) {
         var errors = ValidationConstants.USER_ALREADY_EXISTS;
+        List<Integer> list = new ArrayList<>();
+        list.add(ErrorCodes.findByMessage(errors));
+        return new ResponseEntity(CustomSuccessResponse.getBadResponse(list, ErrorCodes.findByMessage(errors)), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleErrors(BadCredentialsException exception) {
+        var errors = ValidationConstants.USER_NOT_FOUND;
         List<Integer> list = new ArrayList<>();
         list.add(ErrorCodes.findByMessage(errors));
         return new ResponseEntity(CustomSuccessResponse.getBadResponse(list, ErrorCodes.findByMessage(errors)), HttpStatus.BAD_REQUEST);

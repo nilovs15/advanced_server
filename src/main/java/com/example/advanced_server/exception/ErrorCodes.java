@@ -3,7 +3,7 @@ package com.example.advanced_server.exception;
 public enum ErrorCodes {
     UNKNOWN(0, "unknown"),
     USERNAME_SIZE_NOT_VALID(1, ValidationConstants.USERNAME_SIZE_NOT_VALID),
-    ROLE_SIZE_NOT_VALID(2, "role size not valid"),
+//    ROLE_SIZE_NOT_VALID(2, "role size not valid"),
     EMAIL_SIZE_NOT_VALID(3, "email size not valid"),
     MUST_NOT_BE_NULL(4, "must not be null"),
     USER_NOT_FOUND(5, "Could not find user"),

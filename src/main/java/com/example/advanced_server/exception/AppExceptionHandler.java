@@ -1,8 +1,12 @@
 package com.example.advanced_server.exception;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.example.advanced_server.model.CustomSuccessResponse;
 import jakarta.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,14 +14,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-
 @RestControllerAdvice
 public class AppExceptionHandler {
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleErrors(MethodArgumentNotValidException exception) {
         var errors = exception.getBindingResult()
@@ -57,7 +55,7 @@ public class AppExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleErrors(IllegalArgumentException exception) {
-        var errors = ValidationConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST;
+        var errors = ValidationConstants.USER_ALREADY_EXISTS;
         List<Integer> list = new ArrayList<>();
         list.add(ErrorCodes.findByMessage(errors));
         return new ResponseEntity(CustomSuccessResponse.getBadResponse(list, ErrorCodes.findByMessage(errors)), HttpStatus.BAD_REQUEST);

@@ -1,5 +1,8 @@
 package com.example.advanced_server.service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.example.advanced_server.config.JWTUtil;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.ValidationConstants;
@@ -9,16 +12,12 @@ import com.example.advanced_server.model.CustomSuccessResponse;
 import com.example.advanced_server.model.LoginUserDto;
 import com.example.advanced_server.model.RegisterUserDTO;
 import com.example.advanced_server.repository.UserRepository;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
-
-
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
@@ -33,7 +32,7 @@ public class UserService {
 
     public CustomSuccessResponse<LoginUserDto> registration(RegisterUserDTO registerUser) {
         if (!isEmailUnique(registerUser.getEmail())) {
-            throw new IllegalArgumentException(ValidationConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST);
+            throw new IllegalArgumentException(ValidationConstants.USER_ALREADY_EXISTS);
         }
             UserEntity userEntity = RegisterMapper.INSTANCE.toDTO(registerUser);
             userEntity.setPassword(passwordEncoder.encode(registerUser.getPassword()));

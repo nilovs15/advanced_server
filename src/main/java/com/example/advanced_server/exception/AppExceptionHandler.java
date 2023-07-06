@@ -54,8 +54,8 @@ public class AppExceptionHandler {
         return new ResponseEntity(CustomSuccessResponse.getBadResponse(list, ErrorCodes.findByMessage(errors)), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleErrors(IllegalArgumentException exception) {
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<?> handleErrors(UserAlreadyExistException exception) {
         var errors = ValidationConstants.USER_ALREADY_EXISTS;
         List<Integer> list = new ArrayList<>();
         list.add(ErrorCodes.findByMessage(errors));

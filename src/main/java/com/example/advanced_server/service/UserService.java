@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.example.advanced_server.config.JwtUtil;
 import com.example.advanced_server.entity.UserEntity;
+import com.example.advanced_server.exception.UserAlreadyExistException;
 import com.example.advanced_server.exception.ValidationConstants;
 import com.example.advanced_server.mappers.UserEntityMapper;
 import com.example.advanced_server.mappers.LoginUserDtoMapper;
@@ -27,7 +28,7 @@ public class UserService {
 
     public CustomSuccessResponse<LoginUserDto> registration(RegisterUserDTO registerUser) {
         if (!isEmailUnique(registerUser.getEmail())) {
-            throw new IllegalArgumentException(ValidationConstants.USER_ALREADY_EXISTS);
+            throw new UserAlreadyExistException(ValidationConstants.USER_ALREADY_EXISTS);
         }
         UserEntity userEntity = UserEntityMapper.INSTANCE.toDTO(registerUser);
         userEntity.setPassword(passwordEncoder.encode(registerUser.getPassword()));

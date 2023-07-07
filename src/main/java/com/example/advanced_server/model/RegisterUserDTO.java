@@ -28,4 +28,3 @@ public class RegisterUserDTO {
     @NotBlank(message = ValidationConstants.USER_ROLE_NOT_NULL)
     private String role;
 }
-

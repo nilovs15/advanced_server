@@ -1,5 +1,6 @@
 package com.example.advanced_server.controller;
 
+import com.example.advanced_server.model.AuthDTO;
 import com.example.advanced_server.model.RegisterUserDTO;
 import com.example.advanced_server.service.AuthService;
 import jakarta.validation.Valid;
@@ -27,4 +28,8 @@ public class AuthController {
        return ResponseEntity.ok(authService.registration(registerUser));
     }
 
+    @PostMapping("login")
+    public ResponseEntity auth(@RequestBody @Valid AuthDTO authDTO) {
+        return ResponseEntity.ok(authService.login(authDTO));
+    }
 }

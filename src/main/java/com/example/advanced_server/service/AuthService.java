@@ -9,12 +9,15 @@ import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
 import com.example.advanced_server.mappers.UserEntityMapper;
 import com.example.advanced_server.mappers.LoginUserDtoMapper;
+import com.example.advanced_server.model.AuthDTO;
 import com.example.advanced_server.model.CustomSuccessResponse;
 import com.example.advanced_server.model.LoginUserDto;
 import com.example.advanced_server.model.RegisterUserDTO;
 import com.example.advanced_server.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     public CustomSuccessResponse<LoginUserDto> registration(RegisterUserDTO registerUser) {
         if (!isEmailUnique(registerUser.getEmail())) {
@@ -43,5 +47,17 @@ public class AuthService {
     public boolean isEmailUnique(String email) {
         Optional<UserEntity> existUser = userRepository.findByEmail(email);
         return existUser.isEmpty();
+    }
+
+    public CustomSuccessResponse<LoginUserDto> login(AuthDTO authDTO) {
+        String email = authDTO.getEmail();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, authDTO.getPassword()));
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+
+        String token = jwtTokenProvider.generateToken(email);
+        LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity.get());
+        loginUserDto.setId(UUID.fromString(userEntity.get().getId().toString()));
+        loginUserDto.setToken(token);
+        return new CustomSuccessResponse<LoginUserDto>().setData(loginUserDto).setStatusCode(1);
     }
 }

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.ValidationConstants;
-import com.example.advanced_server.repository.UserRepository;
+import com.example.advanced_server.repository.AuthRepository;
 import com.example.advanced_server.security.PersonDetails;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final AuthRepository authRepository;
 
-    public PersonDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public PersonDetailsService(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> person = userRepository.findByEmail(email);
+        Optional<UserEntity> person = authRepository.findByEmail(email);
         if (person.isEmpty()) {
             throw new UsernameNotFoundException(ValidationConstants.USER_NOT_FOUND);
         }

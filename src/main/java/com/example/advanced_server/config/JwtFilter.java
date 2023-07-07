@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.advanced_server.exception.ValidationConstants;
-import com.example.advanced_server.repository.UserRepository;
+import com.example.advanced_server.repository.AuthRepository;
 import com.example.advanced_server.service.PersonDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final PersonDetailsService personDetailsService;
 
-    public JwtFilter(JwtUtil jwtUtil, UserRepository userRepository, PersonDetailsService personDetailsService, PersonDetailsService personDetailsService1) {
+    public JwtFilter(JwtUtil jwtUtil, AuthRepository authRepository, PersonDetailsService personDetailsService, PersonDetailsService personDetailsService1) {
         this.jwtUtil = jwtUtil;
         this.personDetailsService = personDetailsService;
     }

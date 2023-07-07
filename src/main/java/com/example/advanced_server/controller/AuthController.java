@@ -2,7 +2,7 @@ package com.example.advanced_server.controller;
 
 import com.example.advanced_server.model.AuthDTO;
 import com.example.advanced_server.model.RegisterUserDTO;
-import com.example.advanced_server.service.UserService;
+import com.example.advanced_server.service.AuthService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/auth/")
 @Validated
-public class UserController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("register")
     public ResponseEntity register(@RequestBody @Valid RegisterUserDTO registerUser) {
-       return ResponseEntity.ok(userService.registration(registerUser));
+       return ResponseEntity.ok(authService.registration(registerUser));
     }
 
     @PostMapping("login")
     public ResponseEntity auth(@RequestBody @Valid AuthDTO authDTO) {
-        return ResponseEntity.ok(userService.login(authDTO));
+        return ResponseEntity.ok(authService.login(authDTO));
     }
 }

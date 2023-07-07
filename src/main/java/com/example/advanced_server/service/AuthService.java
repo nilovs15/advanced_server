@@ -3,7 +3,7 @@ package com.example.advanced_server.service;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.example.advanced_server.config.JwtUtil;
+import com.example.advanced_server.config.JwtTokenProvider;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
@@ -18,13 +18,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final AuthRepository authRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public CustomSuccessResponse<LoginUserDto> registration(RegisterUserDTO registerUser) {
         if (!isEmailUnique(registerUser.getEmail())) {
@@ -37,7 +36,7 @@ public class AuthService {
 
         LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.toDTO(userEntity);
         loginUserDto.setId(UUID.fromString(userEntity.getId().toString()));
-        loginUserDto.setToken(jwtUtil.generateToken(userEntity.getEmail()));
+        loginUserDto.setToken(jwtTokenProvider.generateToken(userEntity.getEmail()));
         return new CustomSuccessResponse<LoginUserDto>().setData(loginUserDto).setStatusCode(1);
     }
 

@@ -54,8 +54,8 @@ public class AppExceptionHandler {
         return new ResponseEntity(CustomSuccessResponse.getBadResponse(list, ErrorCodes.findByMessage(errors)), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<?> handleErrors(UserAlreadyExistException exception) {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handleErrors(CustomException exception) {
         var errors = ValidationConstants.USER_ALREADY_EXISTS;
         List<Integer> list = new ArrayList<>();
         list.add(ErrorCodes.findByMessage(errors));

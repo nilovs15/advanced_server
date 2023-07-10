@@ -41,7 +41,7 @@ public class AuthService {
         LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity);
         loginUserDto.setId(UUID.fromString(userEntity.getId().toString()));
         loginUserDto.setToken(jwtTokenProvider.generateToken(userEntity.getEmail()));
-        return new CustomSuccessResponse<LoginUserDto>().setData(loginUserDto).setStatusCode(1);
+        return CustomSuccessResponse.getResponse(loginUserDto);
     }
 
     public boolean isEmailUnique(String email) {
@@ -58,6 +58,6 @@ public class AuthService {
         LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity.get());
         loginUserDto.setId(UUID.fromString(userEntity.get().getId().toString()));
         loginUserDto.setToken(token);
-        return new CustomSuccessResponse<LoginUserDto>().setData(loginUserDto).setStatusCode(1);
+        return CustomSuccessResponse.getResponse(loginUserDto);
     }
 }

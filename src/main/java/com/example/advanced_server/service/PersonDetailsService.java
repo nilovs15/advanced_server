@@ -20,11 +20,11 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> person = userRepository.findByEmail(email);
-        if (person.isEmpty()) {
+    public UserDetails loadUserByUsername(String email) {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        if (userEntity.isEmpty()) {
             throw new UsernameNotFoundException(ValidationConstants.USER_NOT_FOUND);
         }
-        return new PersonDetails(person.get());
+        return new PersonDetails(userEntity.get());
     }
 }

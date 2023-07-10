@@ -23,13 +23,9 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final PersonDetailsService personDetailsService;
 
-    public JwtFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository, PersonDetailsService personDetailsService, PersonDetailsService personDetailsService1) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.personDetailsService = personDetailsService;
-    }
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
@@ -37,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (jwt.isBlank()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        ValidationConstants.TOKEN_POSITION_MISMATCH);
+                        ValidationConstants.TOKEN_NOT_PROVIDED);
             } else {
                 try {
                     String username = jwtTokenProvider.validateTokenAndRetrieveClaim(jwt);

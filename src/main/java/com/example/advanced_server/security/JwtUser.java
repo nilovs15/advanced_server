@@ -1,31 +1,38 @@
 package com.example.advanced_server.security;
 
-import com.example.advanced_server.entity.UserEntity;
+import java.util.Collection;
+import java.util.UUID;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+@Getter
+@RequiredArgsConstructor
+public class JwtUser implements UserDetails {
 
-public class PersonDetails implements UserDetails {
-    private final UserEntity userEntity;
-
-    public PersonDetails(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
+    private final UUID id;
+    private final String name;
+    private final String email;
+    private final String password;
+    private final String avatar;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return this.userEntity.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return this.userEntity.getEmail();
+        return email;
     }
 
     @Override
@@ -46,8 +53,5 @@ public class PersonDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-    public UserEntity getPerson() {
-        return this.userEntity;
     }
 }

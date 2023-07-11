@@ -2,10 +2,11 @@ package com.example.advanced_server.entity;
 
 import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +22,6 @@ public class UserEntity {
     private String name;
     private String password;
     private String role;
+
 }
+

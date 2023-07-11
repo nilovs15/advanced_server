@@ -1,11 +1,11 @@
-package com.example.advanced_server.model;
-
-import java.util.List;
+package com.example.advanced_server.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,5 +28,8 @@ public class CustomSuccessResponse<T> {
 
     public static <T> CustomSuccessResponse<T> getBadResponse(List<Integer> codes, Integer code) {
         return new CustomSuccessResponse<T>().setCodes(codes).setCode(codes.get(0)).setStatusCode(code);
+    }
+    public static <T> CustomSuccessResponse<T> getBadResponse(Integer code) {
+        return new CustomSuccessResponse<T>().setStatusCode(code);
     }
 }

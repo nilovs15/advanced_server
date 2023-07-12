@@ -86,8 +86,5 @@ public class JwtTokenProvider {
             return false;
         }
     }
-    public String getEmail(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
-    }
 }
 

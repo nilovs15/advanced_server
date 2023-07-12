@@ -42,9 +42,9 @@ public class AuthServiceImpl implements AuthService {
     public CustomSuccessResponse<LoginUserDto> login(AuthDTO authDTO) {
         try {
             UserEntity user = userRepository.findByEmail(authDTO.getEmail());
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), authDTO.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), authDTO.getPassword()));
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(user);
-            loginUserDto.setToken(jwtTokenProvider.createToken(authDTO.getEmail()));
+            loginUserDto.setToken(jwtTokenProvider.createToken(user.getId().toString()));
             return CustomSuccessResponse.getResponse(loginUserDto);
         }
         catch (Exception e) {

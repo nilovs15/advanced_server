@@ -35,6 +35,6 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity getUserInfo(Authentication authentication) {
-        return ResponseEntity.ok(userService.getUserInfo((authentication.getName())));
+        return ResponseEntity.ok(userService.getUserInfo(UUID.fromString(authentication.getName())));
     }
 }

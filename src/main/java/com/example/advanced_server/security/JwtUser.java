@@ -32,7 +32,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return id.toString();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.advanced_server.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.example.advanced_server.dto.CustomSuccessResponse;
@@ -37,9 +38,9 @@ public class UserServiceImpl implements UserService {
             return CustomSuccessResponse.getResponse(publicUserView);
         }
 
-    public CustomSuccessResponse getUserInfo(String email) {
-        UserEntity user = userRepository.findByEmail(email);
-        PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user);
-        return  CustomSuccessResponse.getResponse(publicUserView);
+    public CustomSuccessResponse getUserInfo(UUID id) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user.get());
+        return CustomSuccessResponse.getResponse(publicUserView);
     }
 }

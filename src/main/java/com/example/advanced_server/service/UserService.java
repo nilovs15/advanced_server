@@ -7,5 +7,5 @@ import com.example.advanced_server.dto.CustomSuccessResponse;
 public interface UserService {
     CustomSuccessResponse getAllUserInfo();
     CustomSuccessResponse getInfoById(UUID id);
-    CustomSuccessResponse getUserInfo(String email);
+    CustomSuccessResponse getUserInfo(UUID uuid);
 }

@@ -8,5 +8,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface PublicUserViewMapper {
     PublicUserViewMapper INSTANCE = Mappers.getMapper(PublicUserViewMapper.class);
-    PublicUserView toDTO(UserEntity entity);
+
+    PublicUserView userEntityToPublicUserView(UserEntity entity);
 }

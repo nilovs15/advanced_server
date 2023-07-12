@@ -40,10 +40,10 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String id, String password) {
+    public String createToken(String id) {
 
         Claims claims = Jwts.claims().setSubject(id);
-        claims.put(id, password);
+        claims.put("id", id);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validationRetention);
@@ -58,7 +58,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getId(token));
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+                userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     public String getId(String token) {

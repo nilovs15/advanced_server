@@ -5,6 +5,6 @@ import com.example.advanced_server.dto.CustomSuccessResponse;
 import com.example.advanced_server.dto.RegisterUserDTO;
 
 public interface AuthService {
-    CustomSuccessResponse registration(RegisterUserDTO user);
+    CustomSuccessResponse register(RegisterUserDTO user);
     CustomSuccessResponse login(AuthDTO user);
 }

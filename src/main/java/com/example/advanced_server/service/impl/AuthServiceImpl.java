@@ -27,15 +27,15 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
-    public CustomSuccessResponse<LoginUserDto> registration(RegisterUserDTO registerUser) {
+    public CustomSuccessResponse<LoginUserDto> register(RegisterUserDTO registerUser) {
         if (userRepository.findByEmail(registerUser.getEmail()) != null) {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
             UserEntity userEntity = UserEntityMapper.INSTANCE.registerUserDtoToUserEntity(registerUser);
             userEntity.setPassword(passwordEncoder.encode(registerUser.getPassword()));
             userRepository.save(userEntity);
-            LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.UserEntityToLoginUserDTO(userEntity);
-            loginUserDto.setToken(jwtTokenProvider.createToken(registerUser.getEmail(), registerUser.getPassword()));
+            LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity);
+            loginUserDto.setToken(jwtTokenProvider.createToken(registerUser.getEmail()));
             return CustomSuccessResponse.getResponse(loginUserDto);
     }
 
@@ -43,8 +43,8 @@ public class AuthServiceImpl implements AuthService {
         try {
             UserEntity user = userRepository.findByEmail(authDTO.getEmail());
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), authDTO.getPassword()));
-            LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.UserEntityToLoginUserDTO(user);
-            loginUserDto.setToken(jwtTokenProvider.createToken(authDTO.getEmail(), authDTO.getPassword()));
+            LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(user);
+            loginUserDto.setToken(jwtTokenProvider.createToken(authDTO.getEmail()));
             return CustomSuccessResponse.getResponse(loginUserDto);
         }
         catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.example.advanced_server.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,6 +12,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
+    @Query("SELECT u FROM UserEntity u")
+    List<UserEntity> findAll();
+
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :id")
+    Optional<UserEntity> findById(@Param("id") UUID id);
+
     @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
-    Optional<UserEntity> findByEmail(@Param("email") String email);
+    UserEntity findByEmail(@Param(value = "email") String email);
 }
+

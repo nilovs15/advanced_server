@@ -1,9 +1,10 @@
 package com.example.advanced_server.controller;
 
-import com.example.advanced_server.model.AuthDTO;
-import com.example.advanced_server.model.RegisterUserDTO;
+import javax.validation.Valid;
+
+import com.example.advanced_server.dto.AuthDTO;
+import com.example.advanced_server.dto.RegisterUserDTO;
 import com.example.advanced_server.service.AuthService;
-import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/auth/")
 @Validated
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("register")
     public ResponseEntity register(@RequestBody @Valid RegisterUserDTO registerUser) {
-       return ResponseEntity.ok(authService.registration(registerUser));
+       return ResponseEntity.ok(authService.register(registerUser));
     }
 
     @PostMapping("login")

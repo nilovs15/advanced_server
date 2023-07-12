@@ -47,7 +47,7 @@ public enum ErrorCodes {
     USER_WITH_THIS_EMAIL_ALREADY_EXIST(46, ValidationConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST),
     HTTP_MESSAGE_NOT_READABLE_EXCEPTION(47, ValidationConstants.HTTP_MESSAGE_NOT_READABLE_EXCEPTION);
 
-    private Integer errorCode;
+    private int errorCode;
     private String exception;
 
     ErrorCodes(Integer errorCode, String exception) {

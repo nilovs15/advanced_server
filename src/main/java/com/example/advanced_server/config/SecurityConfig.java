@@ -1,51 +1,39 @@
 package com.example.advanced_server.config;
 
-import lombok.RequiredArgsConstructor;
+import com.example.advanced_server.security.JwtConfig;
+import com.example.advanced_server.security.JwtTokenProvider;
+import com.example.advanced_server.security.Roles;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static com.example.advanced_server.config.EndPoints.LOGIN_ENDPOINT;
 
 @EnableWebSecurity
 @Configuration
-@RequiredArgsConstructor
-public class SecurityConfig {
-
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .httpBasic().disable()
-                .csrf().disable()
-                .authorizeRequests()
-                .requestMatchers(LOGIN_ENDPOINT).permitAll()
-                .anyRequest().authenticated()
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.httpBasic().disable().csrf().disable().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return httpSecurity.build();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .build();
+                .authorizeRequests()
+                .antMatchers(EndPoints.LOGIN_ENDPOINT).permitAll()
+                .antMatchers(EndPoints.USER_ENDPOINT).hasAuthority(Roles.USER.getAuthority())
+                .anyRequest().authenticated()
+                .and().apply(new JwtConfig(jwtTokenProvider));
     }
 }

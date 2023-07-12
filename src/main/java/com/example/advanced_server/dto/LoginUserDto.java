@@ -1,9 +1,9 @@
-package com.example.advanced_server.model;
-
-import java.util.UUID;
+package com.example.advanced_server.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
 @Setter

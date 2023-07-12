@@ -1,7 +1,6 @@
 package com.example.advanced_server.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.example.advanced_server.dto.CustomSuccessResponse;
@@ -13,15 +12,14 @@ import com.example.advanced_server.mappers.PublicUserViewMapper;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.UserService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public CustomSuccessResponse<List<PublicUserView>> getAllUserInfo() {
         List<PublicUserView> userList = userRepository.findAll()
@@ -39,8 +37,9 @@ public class UserServiceImpl implements UserService {
         }
 
     public CustomSuccessResponse getUserInfo(UUID id) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user.get());
+        UserEntity user = userRepository.findById(id).orElseThrow(() ->
+                new CustomException(ValidationConstants.USER_NOT_FOUND));
+        PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user);
         return CustomSuccessResponse.getResponse(publicUserView);
     }
 }

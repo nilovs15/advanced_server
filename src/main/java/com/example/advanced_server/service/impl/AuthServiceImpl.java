@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     public CustomSuccessResponse<LoginUserDto> register(RegisterUserDTO registerUser) {
-        if (userRepository.findByEmail(registerUser.getEmail()) != null) {
+        if (userRepository.findByEmail(registerUser.getEmail()).isPresent()) {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
             UserEntity userEntity = UserEntityMapper.INSTANCE.registerUserDtoToUserEntity(registerUser);
@@ -41,8 +41,10 @@ public class AuthServiceImpl implements AuthService {
 
     public CustomSuccessResponse<LoginUserDto> login(AuthDTO authDTO) {
         try {
-            UserEntity user = userRepository.findByEmail(authDTO.getEmail());
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), authDTO.getPassword()));
+            UserEntity user = userRepository.findByEmail(authDTO.getEmail()).orElseThrow(() ->
+                    new CustomException(ValidationConstants.USER_NOT_FOUND));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(),
+                    authDTO.getPassword()));
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(user);
             loginUserDto.setToken(jwtTokenProvider.createToken(user.getId().toString()));
             return CustomSuccessResponse.getResponse(loginUserDto);

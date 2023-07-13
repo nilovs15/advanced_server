@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface PutUserDtoToResponse {
     PutUserDtoToResponse INSTANCE = Mappers.getMapper(PutUserDtoToResponse.class);
 
-    PutUserDtoResponse putUserDtoToResponse(UserEntity entity);
+    PutUserDtoResponse userEntityToPutUserDtoResponse(UserEntity entity);
 }

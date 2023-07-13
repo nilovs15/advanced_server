@@ -18,6 +18,7 @@ import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,15 +32,15 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(PublicUserViewMapper.INSTANCE::userEntityToPublicUserView)
                 .toList();
-        return  CustomSuccessResponse.getResponse(userList);
+        return CustomSuccessResponse.getResponse(userList);
     }
 
     public CustomSuccessResponse<PublicUserView> getInfoById(UUID id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
                 new CustomException(ValidationConstants.MAX_UPLOAD_SIZE_EXCEEDED));
-            PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user);
-            return CustomSuccessResponse.getResponse(publicUserView);
-        }
+        PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user);
+        return CustomSuccessResponse.getResponse(publicUserView);
+    }
 
     public CustomSuccessResponse getUserInfo(UUID id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
@@ -52,11 +53,19 @@ public class UserServiceImpl implements UserService {
     public CustomSuccessResponse replaceUser(UUID id, PutUserDto putUserDto) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
                 new CustomException(ValidationConstants.USER_NOT_FOUND));
-      UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToEntity(putUserDto);
-      newUser.setId(user.getId());
-      newUser.setPassword(user.getPassword());
+        if (!isEmailUnique(putUserDto.getEmail())) {
+            throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
+        }
+        UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToUserEntity(putUserDto);
+        newUser.setId(user.getId());
+        newUser.setPassword(user.getPassword());
         userRepository.save(newUser);
-        PutUserDtoResponse putUserDtoResponse = PutUserDtoToResponse.INSTANCE.putUserDtoToResponse(newUser);
+        PutUserDtoResponse putUserDtoResponse = PutUserDtoToResponse.INSTANCE.userEntityToPutUserDtoResponse(newUser);
         return CustomSuccessResponse.getResponse(putUserDtoResponse);
+    }
+
+    public boolean isEmailUnique(String email) {
+        Optional<UserEntity> existUser = userRepository.findByEmail(email);
+        return existUser.isEmpty();
     }
 }

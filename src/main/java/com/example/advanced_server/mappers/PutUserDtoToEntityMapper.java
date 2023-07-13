@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface PutUserDtoToEntityMapper {
     PutUserDtoToEntityMapper INSTANCE = Mappers.getMapper(PutUserDtoToEntityMapper.class);
 
-    UserEntity putUserDtoToEntity(PutUserDto putUserDto);
+    UserEntity putUserDtoToUserEntity(PutUserDto putUserDto);
 }

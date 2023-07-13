@@ -17,6 +17,7 @@ import com.example.advanced_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -66,13 +67,9 @@ public class UserServiceImpl implements UserService {
         return existUser.isEmpty();
     }
 
+    @Transactional
     public BaseSuccessResponse deleteUser(UUID id) {
-        try {
-            userRepository.deleteById(id);
-        }
-        catch (Exception e) {
-            throw new CustomException(ValidationConstants.USER_NOT_FOUND);
-        }
+        userRepository.deleteById(id);
         return BaseSuccessResponse.getResponse();
     }
 }

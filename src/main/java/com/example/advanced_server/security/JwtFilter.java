@@ -2,6 +2,10 @@ package com.example.advanced_server.security;
 
 import java.io.IOException;
 
+import com.example.advanced_server.dto.CustomSuccessResponse;
+import com.example.advanced_server.exception.CustomException;
+import com.example.advanced_server.exception.ErrorCodes;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.FilterChain;
@@ -19,15 +23,26 @@ import org.springframework.web.filter.GenericFilterBean;
 @RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
+
   private final JwtTokenProvider jwtTokenProvider;
+  private final ObjectMapper mapper = new ObjectMapper();
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            if (authentication != null) {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        try {
+
+            String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                if (authentication != null) {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+        }
+        catch (CustomException e){
+            response.getOutputStream().print(mapper
+                    .writeValueAsString(CustomSuccessResponse.getBadResponse(
+                            (ErrorCodes.UNAUTHORISED.getErrorCode()))));
         }
         chain.doFilter(request, response);
     }

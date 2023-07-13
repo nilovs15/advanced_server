@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
             userEntity.setPassword(passwordEncoder.encode(registerUser.getPassword()));
             userRepository.save(userEntity);
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity);
-            loginUserDto.setToken(jwtTokenProvider.createToken(registerUser.getEmail()));
+            loginUserDto.setToken(jwtTokenProvider.createToken(userEntity.getId().toString()));
             return CustomSuccessResponse.getResponse(loginUserDto);
     }
 

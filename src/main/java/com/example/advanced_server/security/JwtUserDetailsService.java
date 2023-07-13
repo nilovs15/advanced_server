@@ -1,6 +1,9 @@
 package com.example.advanced_server.security;
 
+import java.util.UUID;
+
 import com.example.advanced_server.entity.UserEntity;
+import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
 import com.example.advanced_server.repository.UserRepository;
 
@@ -9,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -22,11 +23,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
-        Optional<UserEntity> person = userRepository.findById(UUID.fromString(uuid));
-        if (person == null) {
-            throw new UsernameNotFoundException(ValidationConstants.USER_NOT_FOUND);
-        }
-        JwtUser jwtUser = JwtUserFactory.create(person.get());
+        UserEntity person = userRepository.findById(UUID.fromString(uuid)).orElseThrow(() ->
+                new CustomException(ValidationConstants.USER_NOT_FOUND));
+        JwtUser jwtUser = JwtUserFactory.create(person);
         return jwtUser;
     }
 }

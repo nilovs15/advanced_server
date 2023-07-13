@@ -2,6 +2,7 @@ package com.example.advanced_server.controller;
 
 import java.util.UUID;
 
+import com.example.advanced_server.dto.PutUserDto;
 import com.example.advanced_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -9,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/user")
@@ -36,5 +36,10 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity getUserInfo(Authentication authentication) {
         return ResponseEntity.ok(userService.getUserInfo(UUID.fromString(authentication.getName())));
+    }
+
+    @PutMapping
+    public ResponseEntity replaceUser(@RequestBody @Valid PutUserDto putUserDto, Authentication authentication) {
+        return ResponseEntity.ok(userService.replaceUser(UUID.fromString(authentication.getName()), putUserDto));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.advanced_server.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import com.example.advanced_server.dto.CustomSuccessResponse;
 import com.example.advanced_server.exception.CustomException;
@@ -40,9 +41,14 @@ public class JwtFilter extends GenericFilterBean {
             }
         }
         catch (CustomException e){
-            response.getOutputStream().print(mapper
-                    .writeValueAsString(CustomSuccessResponse.getBadResponse(
-                            (ErrorCodes.UNAUTHORISED.getErrorCode()))));
+            CustomSuccessResponse errorResponse = CustomSuccessResponse.getBadResponse(
+                    Collections.singletonList(ErrorCodes.UNAUTHORISED.getErrorCode()),
+                    ErrorCodes.UNAUTHORISED.getErrorCode());
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(mapper.writeValueAsString(errorResponse));
+            return;
         }
         chain.doFilter(request, response);
     }

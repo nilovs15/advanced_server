@@ -10,7 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -41,5 +47,10 @@ public class UserController {
     @PutMapping
     public ResponseEntity replaceUser(@RequestBody @Valid PutUserDto putUserDto, Authentication authentication) {
         return ResponseEntity.ok(userService.replaceUser(UUID.fromString(authentication.getName()), putUserDto));
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteUser(Authentication authentication) {
+        return ResponseEntity.ok(userService.deleteUser(UUID.fromString(authentication.getName())));
     }
 }

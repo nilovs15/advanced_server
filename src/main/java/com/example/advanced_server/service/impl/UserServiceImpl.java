@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.example.advanced_server.dto.CustomSuccessResponse;
-import com.example.advanced_server.dto.PublicUserView;
-import com.example.advanced_server.dto.PutUserDto;
-import com.example.advanced_server.dto.PutUserDtoResponse;
+import com.example.advanced_server.dto.*;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
@@ -67,5 +64,15 @@ public class UserServiceImpl implements UserService {
     public boolean isEmailUnique(String email) {
         Optional<UserEntity> existUser = userRepository.findByEmail(email);
         return existUser.isEmpty();
+    }
+
+    public BaseSuccessResponse deleteUser(UUID id) {
+        try {
+            userRepository.deleteById(id);
+        }
+        catch (Exception e) {
+            throw new CustomException(ValidationConstants.USER_NOT_FOUND);
+        }
+        return BaseSuccessResponse.getResponse();
     }
 }

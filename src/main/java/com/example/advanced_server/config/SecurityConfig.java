@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -35,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(EndPoints.LOGIN_ENDPOINT).permitAll()
+                .antMatchers(EndPoints.NEWS_ENDPOINT).permitAll()
                 .antMatchers(EndPoints.USER_ENDPOINT).hasAuthority(Roles.USER.getAuthority())
                 .anyRequest().authenticated()
                 .and().httpBasic().and()

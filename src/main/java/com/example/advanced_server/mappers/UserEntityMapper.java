@@ -1,6 +1,6 @@
 package com.example.advanced_server.mappers;
 
-import com.example.advanced_server.dto.RegisterUserDTO;
+import com.example.advanced_server.dto.authDto.RegisterUserDTO;
 import com.example.advanced_server.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

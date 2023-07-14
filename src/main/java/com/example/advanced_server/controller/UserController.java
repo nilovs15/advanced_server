@@ -2,7 +2,7 @@ package com.example.advanced_server.controller;
 
 import java.util.UUID;
 
-import com.example.advanced_server.dto.PutUserDto;
+import com.example.advanced_server.dto.usersDto.PutUserDto;
 import com.example.advanced_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 

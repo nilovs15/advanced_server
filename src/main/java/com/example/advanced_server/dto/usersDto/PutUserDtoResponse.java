@@ -1,4 +1,4 @@
-package com.example.advanced_server.dto;
+package com.example.advanced_server.dto.usersDto;
 
 import java.util.UUID;
 

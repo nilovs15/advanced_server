@@ -2,11 +2,11 @@ package com.example.advanced_server.controller;
 
 import javax.validation.Valid;
 
-import com.example.advanced_server.dto.AuthDTO;
-import com.example.advanced_server.dto.RegisterUserDTO;
+import com.example.advanced_server.dto.authDto.AuthDTO;
+import com.example.advanced_server.dto.authDto.RegisterUserDTO;
 import com.example.advanced_server.service.AuthService;
-
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

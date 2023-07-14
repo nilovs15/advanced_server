@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.example.advanced_server.dto.BaseSuccessResponse;
 import com.example.advanced_server.dto.CustomSuccessResponse;
-import com.example.advanced_server.dto.PutUserDto;
+import com.example.advanced_server.dto.usersDto.PutUserDto;
 
 public interface UserService {
     CustomSuccessResponse getAllUserInfo();

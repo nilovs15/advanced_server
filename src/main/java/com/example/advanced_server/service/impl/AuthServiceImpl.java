@@ -1,9 +1,9 @@
 package com.example.advanced_server.service.impl;
 
-import com.example.advanced_server.dto.AuthDTO;
 import com.example.advanced_server.dto.CustomSuccessResponse;
-import com.example.advanced_server.dto.LoginUserDto;
-import com.example.advanced_server.dto.RegisterUserDTO;
+import com.example.advanced_server.dto.authDto.AuthDTO;
+import com.example.advanced_server.dto.authDto.LoginUserDto;
+import com.example.advanced_server.dto.authDto.RegisterUserDTO;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;

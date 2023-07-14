@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.example.advanced_server.dto.*;
+import com.example.advanced_server.dto.BaseSuccessResponse;
+import com.example.advanced_server.dto.CustomSuccessResponse;
+import com.example.advanced_server.dto.usersDto.PublicUserView;
+import com.example.advanced_server.dto.usersDto.PutUserDto;
+import com.example.advanced_server.dto.usersDto.PutUserDtoResponse;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
@@ -13,9 +17,8 @@ import com.example.advanced_server.mappers.PutUserDtoToEntityMapper;
 import com.example.advanced_server.mappers.PutUserDtoToResponse;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.UserService;
-
 import lombok.RequiredArgsConstructor;
-import org.hibernate.NonUniqueResultException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

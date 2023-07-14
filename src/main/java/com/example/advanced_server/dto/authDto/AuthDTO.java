@@ -1,4 +1,4 @@
-package com.example.advanced_server.dto;
+package com.example.advanced_server.dto.authDto;
 
 import com.example.advanced_server.exception.ValidationConstants;
 import lombok.Getter;

@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.example.advanced_server.dto.CustomSuccessResponse;
-import com.example.advanced_server.dto.PublicUserView;
-import com.example.advanced_server.dto.PutUserDto;
-import com.example.advanced_server.dto.PutUserDtoResponse;
+import com.example.advanced_server.dto.*;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
@@ -20,6 +17,7 @@ import com.example.advanced_server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +65,11 @@ public class UserServiceImpl implements UserService {
     public boolean isEmailUnique(String email) {
         Optional<UserEntity> existUser = userRepository.findByEmail(email);
         return existUser.isEmpty();
+    }
+
+    @Transactional
+    public BaseSuccessResponse deleteUser(UUID id) {
+        userRepository.deleteById(id);
+        return BaseSuccessResponse.getResponse();
     }
 }

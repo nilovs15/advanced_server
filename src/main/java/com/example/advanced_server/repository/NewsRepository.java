@@ -1,6 +1,7 @@
 package com.example.advanced_server.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.example.advanced_server.entity.NewsEntity;
@@ -29,4 +30,7 @@ public interface NewsRepository extends JpaRepository<NewsEntity, Long> {
             @Param("tags") List<String> tags,
             Pageable pageable
     );
+
+    @Query("SELECT n FROM NewsEntity n WHERE n.id = :news_id")
+    Optional<NewsEntity> findById(@Param("news_id") Long id);
 }

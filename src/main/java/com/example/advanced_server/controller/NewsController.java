@@ -3,7 +3,6 @@ package com.example.advanced_server.controller;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
@@ -59,5 +58,10 @@ public class NewsController {
                                    @RequestParam(defaultValue = "1") Integer page,
                                    @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.findNews(author, keyword, tags, page, perPage));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity changeNews(@PathVariable Long id, @RequestBody NewsDto newsDto) {
+        return ResponseEntity.ok(newsService.changeNews(id, newsDto));
     }
 }

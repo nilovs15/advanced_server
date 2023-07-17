@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/v1/news")
 @Validated
@@ -55,8 +56,8 @@ public class NewsController {
     public ResponseEntity findNews(@RequestParam(required = false) String author,
                                    @RequestParam(required = false) String keyword,
                                    @RequestParam(required = false) List<String> tags,
-                                   @RequestParam Integer page,
-                                   @RequestParam Integer perPage) {
+                                   @RequestParam(defaultValue = "1") Integer page,
+                                   @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.findNews(author, keyword, tags, page, perPage));
     }
 }

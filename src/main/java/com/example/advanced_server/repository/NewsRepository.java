@@ -19,7 +19,9 @@ public interface NewsRepository extends JpaRepository<NewsEntity, Long> {
     @Query("SELECT n FROM NewsEntity n " +
             "JOIN n.tags t " +
             "WHERE (:author IS NULL OR n.username = :author) " +
-            "AND (:keyword IS NULL OR n.title LIKE %:keyword%) " +
+            "AND (:keyword IS NULL " +
+                "OR n.title LIKE %:keyword% " +
+                "OR n.description LIKE %:keyword%) " +
             "AND (COALESCE(:tags) IS NULL OR t.title IN :tags)")
     Page<NewsEntity> findNewsByParam(
             @Param("author") String author,

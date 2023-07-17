@@ -72,7 +72,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public CustomSuccessResponse getUserNews(UUID id, Integer page, Integer perPage) {
         Pageable pageable = PageRequest.of(page - 1, perPage);
-        Page<NewsEntity> newsEntities = newsRepository.findNewsByUser(pageable, id);
+        Page<NewsEntity> newsEntities = newsRepository.findNewsByUserId(pageable, id);
 
         List<GetNewOutDto> getNewOutDtos = newsEntities.stream()
                 .map(newsEntity -> GetNewsDtoMapper.INSTANCE.newsEntityToGetNewsOutDto(newsEntity)

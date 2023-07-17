@@ -12,6 +12,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface NewsRepository extends JpaRepository<NewsEntity, Long> {
 
-    @Query(value = "SELECT * FROM news_entity WHERE user_id = :user_id", nativeQuery = true)
-    Page<NewsEntity> findNewsByUser(Pageable pageable, @Param("user_id") UUID id);
+    @Query("SELECT n FROM NewsEntity n WHERE n.id = :user_id")
+    Page<NewsEntity> findNewsByUserId(Pageable pageable, @Param("user_id") UUID id);
 }

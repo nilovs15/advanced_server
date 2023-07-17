@@ -60,4 +60,9 @@ public class NewsController {
                                    @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.findNews(author, keyword, tags, page, perPage));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity changeNews(@PathVariable Long id, @RequestBody NewsDto newsDto) {
+        return ResponseEntity.ok(newsService.changeNews(id, newsDto));
+    }
 }

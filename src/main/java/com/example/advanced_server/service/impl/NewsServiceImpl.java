@@ -2,7 +2,9 @@ package com.example.advanced_server.service.impl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import com.example.advanced_server.dto.BaseSuccessResponse;
 import com.example.advanced_server.dto.CustomSuccessResponse;
 import com.example.advanced_server.dto.newsDto.CreateNewsSuccessResponse;
 import com.example.advanced_server.dto.newsDto.GetNewOutDto;
@@ -99,5 +101,20 @@ public class NewsServiceImpl implements NewsService {
                 .toList();
 
         return CustomSuccessResponse.getResponse(PageableResponse.getResponse(getNewOutDtos));
+    }
+
+    public BaseSuccessResponse changeNews(Long id, NewsDto newsDto) {
+        NewsEntity news = newsRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ValidationConstants.NEWS_NOT_FOUND));
+            news
+                .setDescription(newsDto.getDescription())
+                .setTitle(newsDto.getTitle())
+                .setImage(newsDto.getImage())
+                .setTags(newsDto.getTags().stream()
+                        .map(tag -> new TagEntity()
+                                .setTitle(tag))
+                        .collect(Collectors.toList()));
+        newsRepository.save(news);
+        return BaseSuccessResponse.getResponse();
     }
 }

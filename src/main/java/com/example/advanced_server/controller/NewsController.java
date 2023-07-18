@@ -42,10 +42,10 @@ public class NewsController {
     @GetMapping
     public ResponseEntity getNews(
             @Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
-            @RequestParam Integer page,
+            @RequestParam(defaultValue = "1") Integer page,
 
             @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
-            @RequestParam Integer perPage) {
+            @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.getNews(page, perPage));
     }
 
@@ -53,10 +53,10 @@ public class NewsController {
     public ResponseEntity getUserNews(Authentication authentication,
 
                                       @Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
-                                      @RequestParam Integer page,
+                                      @RequestParam(defaultValue = "1") Integer page,
 
                                       @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
-                                      @RequestParam Integer perPage) {
+                                      @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.getUserNews(UUID.fromString(authentication.getName()), page, perPage));
     }
 

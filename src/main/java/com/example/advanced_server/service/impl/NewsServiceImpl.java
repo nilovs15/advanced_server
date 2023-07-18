@@ -48,7 +48,7 @@ public class NewsServiceImpl implements NewsService {
                 .toList();
         NewsEntity news = new NewsEntity()
                 .setDescription(newsDto.getDescription())
-                .setImage(newsDto.getImage())
+                .setImage(FileServiceImpl.uploading.toString())
                 .setTitle(newsDto.getTitle())
                 .setUsername(user.getName())
                 .setTags(tags)
@@ -111,7 +111,7 @@ public class NewsServiceImpl implements NewsService {
             news
                 .setDescription(newsDto.getDescription())
                 .setTitle(newsDto.getTitle())
-                .setImage(newsDto.getImage())
+                .setImage(FileServiceImpl.uploading.toString())
                 .setTags(newsDto.getTags().stream()
                         .map(tag -> new TagEntity()
                                 .setTitle(tag))

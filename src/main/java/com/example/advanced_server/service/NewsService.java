@@ -18,4 +18,5 @@ public interface NewsService {
 
     CustomSuccessResponse findNews(String author, String keywords, List<String> tags, Integer page, Integer perPage);
     BaseSuccessResponse changeNews(Long id, NewsDto newsDto);
+    BaseSuccessResponse deleteNews(Long id);
 }

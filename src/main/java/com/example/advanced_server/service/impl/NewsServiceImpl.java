@@ -23,10 +23,12 @@ import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.NewsService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -115,6 +117,17 @@ public class NewsServiceImpl implements NewsService {
                                 .setTitle(tag))
                         .collect(Collectors.toList()));
         newsRepository.save(news);
+        return BaseSuccessResponse.getResponse();
+    }
+
+    @Transactional
+    public BaseSuccessResponse deleteNews(Long id) {
+        try {
+            newsRepository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new CustomException(ValidationConstants.NEWS_NOT_FOUND);
+        }
         return BaseSuccessResponse.getResponse();
     }
 }

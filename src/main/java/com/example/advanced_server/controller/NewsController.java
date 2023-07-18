@@ -64,4 +64,9 @@ public class NewsController {
     public ResponseEntity changeNews(@PathVariable Long id, @RequestBody NewsDto newsDto) {
         return ResponseEntity.ok(newsService.changeNews(id, newsDto));
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        return ResponseEntity.ok(newsService.deleteNews(id));
+    }
 }

@@ -50,8 +50,7 @@ public class AuthServiceImpl implements AuthService {
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(user);
             loginUserDto.setToken(jwtTokenProvider.createToken(user.getId().toString()));
             return CustomSuccessResponse.getResponse(loginUserDto);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new CustomException(ValidationConstants.USER_NOT_FOUND);
         }
     }

@@ -1,7 +1,7 @@
 package com.example.advanced_server.config;
 
-import com.example.advanced_server.logger.LoggerHandleInterceptor;
-import com.example.advanced_server.repository.LoggerRepository;
+import com.example.advanced_server.logger.LogHandleInterceptor;
+import com.example.advanced_server.repository.LogRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 @RequiredArgsConstructor
-public class MvcConfig extends WebMvcConfigurationSupport {
+public class LogConfig extends WebMvcConfigurationSupport {
 
-    private final LoggerRepository loggerRepository;
+    private final LogRepository logRepository;
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoggerHandleInterceptor(loggerRepository));
+        registry.addInterceptor(new LogHandleInterceptor(logRepository));
     }
 }

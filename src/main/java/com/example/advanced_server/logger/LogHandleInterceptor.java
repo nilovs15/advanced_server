@@ -1,7 +1,7 @@
 package com.example.advanced_server.logger;
 
 import com.example.advanced_server.entity.LogEntity;
-import com.example.advanced_server.repository.LoggerRepository;
+import com.example.advanced_server.repository.LogRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequiredArgsConstructor
-public class LoggerHandleInterceptor implements HandlerInterceptor {
+public class LogHandleInterceptor implements HandlerInterceptor {
 
-    private final LoggerRepository loggerRepository;
+    private final LogRepository loggerRepository;
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-            throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+                                Object handler, Exception ex) {
 
         loggerRepository.save(new LogEntity()
                 .setMethod(request.getMethod())

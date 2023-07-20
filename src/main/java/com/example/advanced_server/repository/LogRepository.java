@@ -4,6 +4,6 @@ import com.example.advanced_server.entity.LogEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LoggerRepository extends JpaRepository<LogEntity, Long> {
+public interface LogRepository extends JpaRepository<LogEntity, Long> {
 
 }

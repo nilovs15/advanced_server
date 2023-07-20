@@ -13,10 +13,12 @@ import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 @Entity
+@Accessors(chain = true)
 public class UserEntity {
 
     @Id

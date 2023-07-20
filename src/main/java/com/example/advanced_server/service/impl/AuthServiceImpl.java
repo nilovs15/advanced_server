@@ -12,6 +12,7 @@ import com.example.advanced_server.mappers.UserEntityMapper;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.security.JwtTokenProvider;
 import com.example.advanced_server.service.AuthService;
+import com.example.advanced_server.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,8 +32,10 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.findByEmail(registerUser.getEmail()).isPresent()) {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
-            UserEntity userEntity = UserEntityMapper.INSTANCE.registerUserDtoToUserEntity(registerUser);
-            userEntity.setPassword(passwordEncoder.encode(registerUser.getPassword()));
+            UserEntity userEntity = UserEntityMapper.INSTANCE.registerUserDtoToUserEntity(registerUser)
+                        .setAvatar(registerUser.getAvatar())
+                        .setPassword(passwordEncoder.encode(registerUser.getPassword()));
+
             userRepository.save(userEntity);
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(userEntity);
             loginUserDto.setToken(jwtTokenProvider.createToken(userEntity.getId().toString()));
@@ -48,8 +51,7 @@ public class AuthServiceImpl implements AuthService {
             LoginUserDto loginUserDto = LoginUserDtoMapper.INSTANCE.userEntityToLoginUserDTO(user);
             loginUserDto.setToken(jwtTokenProvider.createToken(user.getId().toString()));
             return CustomSuccessResponse.getResponse(loginUserDto);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new CustomException(ValidationConstants.USER_NOT_FOUND);
         }
     }

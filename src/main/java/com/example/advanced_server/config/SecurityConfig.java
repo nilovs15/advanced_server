@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(EndPoints.LOGIN_ENDPOINT).permitAll()
                 .antMatchers(EndPoints.NEWS_ENDPOINT).permitAll()
                 .antMatchers(EndPoints.USER_ENDPOINT).hasAuthority(Roles.USER.getAuthority())
+                .antMatchers(EndPoints.FILE_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic().and()
                 .exceptionHandling().authenticationEntryPoint(authEntryPoint)

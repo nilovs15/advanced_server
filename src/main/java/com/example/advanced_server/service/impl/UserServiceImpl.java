@@ -57,9 +57,11 @@ public class UserServiceImpl implements UserService {
         if (!isEmailUnique(putUserDto.getEmail())) {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
-        UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToUserEntity(putUserDto);
-        newUser.setId(user.getId());
-        newUser.setPassword(user.getPassword());
+        UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToUserEntity(putUserDto)
+                    .setAvatar(putUserDto.getAvatar())
+                    .setId(user.getId())
+                    .setPassword(user.getPassword());
+
         userRepository.save(newUser);
         PutUserDtoResponse putUserDtoResponse = PutUserDtoToResponse.INSTANCE.userEntityToPutUserDtoResponse(newUser);
         return CustomSuccessResponse.getResponse(putUserDtoResponse);

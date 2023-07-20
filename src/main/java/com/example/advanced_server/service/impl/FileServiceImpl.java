@@ -27,12 +27,10 @@ public class FileServiceImpl implements FileService {
 
     private Path root = Paths.get("files/").toAbsolutePath();
 
-    public static Path uploading;
     @Override
     public CustomSuccessResponse uploadFile(MultipartFile file) throws IOException {
         String fileName = UUID.randomUUID() + "." + file.getOriginalFilename();
         Path copyLocation = Paths.get(uploadDir + File.separator + fileName);
-        uploading = Path.of(fileUrl + fileName);
         Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
         return CustomSuccessResponse.getResponse(fileUrl + fileName);
     }

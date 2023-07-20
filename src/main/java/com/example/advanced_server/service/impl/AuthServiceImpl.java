@@ -12,6 +12,7 @@ import com.example.advanced_server.mappers.UserEntityMapper;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.security.JwtTokenProvider;
 import com.example.advanced_server.service.AuthService;
+import com.example.advanced_server.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
             UserEntity userEntity = UserEntityMapper.INSTANCE.registerUserDtoToUserEntity(registerUser)
-                        .setAvatar(FileServiceImpl.uploading.toString())
+                        .setAvatar(registerUser.getAvatar())
                         .setPassword(passwordEncoder.encode(registerUser.getPassword()));
 
             userRepository.save(userEntity);

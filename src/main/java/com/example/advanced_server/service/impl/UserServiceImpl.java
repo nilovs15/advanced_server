@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
         UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToUserEntity(putUserDto)
-                    .setAvatar(FileServiceImpl.uploading.toString())
+                    .setAvatar(putUserDto.getAvatar())
                     .setId(user.getId())
                     .setPassword(user.getPassword());
 

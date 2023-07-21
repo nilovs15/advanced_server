@@ -12,6 +12,7 @@ import com.example.advanced_server.mappers.UserEntityMapper;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.security.JwtTokenProvider;
 import com.example.advanced_server.service.AuthService;
+import com.example.advanced_server.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;

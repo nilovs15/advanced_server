@@ -50,11 +50,12 @@ public class NewsController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity getUserNews(
-                                    Authentication authentication,
-                                    @Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
-                                    @RequestParam(defaultValue = "3") Integer perPage) {
+                                  Authentication authentication,
+                                  @Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
+                                  @RequestParam(defaultValue = "3") Integer perPage) {
+
         return ResponseEntity.ok(newsService.getUserNews(UUID.fromString(authentication.getName()), page, perPage));
     }
 

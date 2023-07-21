@@ -20,19 +20,17 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 
     @Value("${spring.servlet.multipart.location}")
-    private String uploadDir;
+    private String uploadDir = "/home/dunice/newAfterDelete/files/";
 
     @Value("${server.fileUrl}")
-    private String fileUrl;
+    private String fileUrl = "http://localhost:8080/v1/file/";
 
     private Path root = Paths.get("files/").toAbsolutePath();
 
-    public static Path uploading;
     @Override
-    public CustomSuccessResponse uploadFile(MultipartFile file) throws IOException {
+    public CustomSuccessResponse<String> uploadFile(MultipartFile file) throws IOException {
         String fileName = UUID.randomUUID() + "." + file.getOriginalFilename();
         Path copyLocation = Paths.get(uploadDir + File.separator + fileName);
-        uploading = Path.of(fileUrl + fileName);
         Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
         return CustomSuccessResponse.getResponse(fileUrl + fileName);
     }

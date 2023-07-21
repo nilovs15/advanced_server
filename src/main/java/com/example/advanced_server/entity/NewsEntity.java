@@ -2,7 +2,6 @@ package com.example.advanced_server.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public class NewsEntity {
     private String title;
     private String username;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "news_id")
     private List<TagEntity> tags;
 

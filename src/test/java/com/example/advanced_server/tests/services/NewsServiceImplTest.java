@@ -52,7 +52,7 @@ class NewsServiceImplTest {
     NewsRepository newsRepository;
 
     @Test
-    void createNews_Should_Return_Correct_Result() {
+    void successCreateNews() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         CreateNewsSuccessResponse response = newsService.createNews(user.getId(), newsDto);
@@ -64,7 +64,7 @@ class NewsServiceImplTest {
     }
 
     @Test
-    void getNews_Should_Return_Correct_Result() {
+    void successGetNews() {
         Pageable pageable = PageRequest.of(0, 3);
         List<NewsEntity> allNews = List.of(news);
         Page<NewsEntity> newsInPage = new PageImpl<NewsEntity>(allNews, pageable, allNews.size());
@@ -82,7 +82,7 @@ class NewsServiceImplTest {
     }
 
     @Test
-    void getUserNews_Should_Return_Correct_Result() {
+    void successGetUserNews() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         Pageable pageable = PageRequest.of(0, 3);
@@ -102,25 +102,29 @@ class NewsServiceImplTest {
     }
 
     @Test
-    void findNews_Should_Return_Correct_Result() {
+    void successFindNews() {
         Pageable pageable = PageRequest.of(0, 3);
         List<NewsEntity> allNews = List.of(news);
         Page<NewsEntity> newsInPage = new PageImpl<NewsEntity>(allNews, pageable, allNews.size());
 
-        when(newsRepository.findNewsByParam(user.getName(), "t", List.of(news.getTags().get(0).getTitle()), pageable)).thenReturn(newsInPage);
+        when(newsRepository.findNewsByParam(
+                user.getName(), "t", List.of(news.getTags().get(0).getTitle()), pageable))
+                .thenReturn(newsInPage);
 
-        CustomSuccessResponse<PageableResponse> response = newsService.findNews(user.getName(), "t", List.of(news.getTags().get(0).getTitle()), 1, 3);
+        CustomSuccessResponse<PageableResponse> response = newsService.findNews(
+                user.getName(), "t", List.of(news.getTags().get(0).getTitle()), 1, 3);
 
         assertTrue(response.isSuccess());
         assertEquals(1, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
-        verify(newsRepository, times(1)).findNewsByParam(anyString(), anyString(), anyList(), any());
+        verify(newsRepository, times(1))
+                .findNewsByParam(anyString(), anyString(), anyList(), any());
     }
 
     @Test
-    void changeNews_Should_Return_Correct_Result() {
+    void successChangeNews() {
         when(newsRepository.findById(news.getId())).thenReturn(Optional.of(news));
 
         BaseSuccessResponse response = newsService.changeNews(news.getId(), changedNewsDto);
@@ -133,7 +137,7 @@ class NewsServiceImplTest {
     }
 
     @Test
-    void deleteNews_Should_Return_Correct_Result() {
+    void successDeleteNews() {
         when(newsRepository.findById(news.getId())).thenReturn(Optional.of(news));
 
         BaseSuccessResponse response = newsService.deleteNews(news.getId());

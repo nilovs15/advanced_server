@@ -10,21 +10,17 @@ import com.example.advanced_server.exception.CustomException;
 import com.example.advanced_server.exception.ValidationConstants;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.UserService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +28,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import static com.example.advanced_server.tests.services.TestsConstants.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -55,7 +54,7 @@ class UserServiceImplTest {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
-    void getAllUserInfo_Should_Return_Correct_Result() {
+    void successGetAllUserInfo() {
 
         when(userRepository.findAll()).thenReturn(List.of(user));
 
@@ -73,7 +72,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getInfoById_Should_Return_Correct_Result() {
+    void successGetInfoById() {
 
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
@@ -91,18 +90,17 @@ class UserServiceImplTest {
     }
 
     @Test
-    void should_ThrowException_When_Invalid_Id_In_GetInfoById() {
+    void shouldThrowException_WhenInvalidId() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        try {
-            CustomSuccessResponse<PublicUserView> response = userService.getInfoById(UUID.randomUUID());
-        } catch (CustomException e) {
-            assertEquals(e.getMessage(), ValidationConstants.USER_NOT_FOUND);
-        }
+        CustomException thrown = assertThrows(CustomException.class,
+                () -> userService.getInfoById(UUID.randomUUID()));
+
+        assertEquals(ValidationConstants.USER_NOT_FOUND, thrown.getMessage());
     }
 
     @Test
-    void getUserInfo_Should_Return_Correct_Result() {
+    void successGetUserInfo() {
 
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
@@ -120,11 +118,11 @@ class UserServiceImplTest {
     }
 
     @Test
-    void replaceUser_Should_Return_Correct_Result() throws IOException {
+    void successReplaceUser() throws IOException {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         FileServiceTest fileServiceTest = new FileServiceTest();
-        fileServiceTest.success_UploadFile();
+        fileServiceTest.successUploadFile();
 
         CustomSuccessResponse<PutUserDtoResponse> response = userService.replaceUser(user.getId(), putUserDto);
 
@@ -137,13 +135,13 @@ class UserServiceImplTest {
     }
 
     @Test
-    void test_When_Invalid_Email() {
+    void testWhenInvalidEmail() {
         Set<ConstraintViolation<PutUserDto>> violations = validator.validate(incorrectPutUserDto);
         assertFalse(violations.isEmpty());
     }
 
     @Test
-    void deleteUser_Should_Return_Correct_Result() {
+    void successDeleteUser( ) {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         BaseSuccessResponse response = userService.deleteUser(user.getId());

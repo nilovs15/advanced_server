@@ -21,9 +21,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Optional;
 
 import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.times;
@@ -50,7 +50,7 @@ class AuthServiceImplTest {
     private AuthenticationManager authenticationManager;
 
     @Test
-    void register_Should_Return_Correct_Result() {
+    void successRegister() {
 
         when(jwtTokenProvider.createToken(anyString())).thenReturn("Bearer_");
         when(userRepository.save(any(UserEntity.class))).thenReturn(user);
@@ -71,7 +71,7 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void login_Should_Return_Correct_Result() {
+    void successLogin() {
         when(jwtTokenProvider.createToken(anyString())).thenReturn("Bearer_");
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(user));
 
@@ -91,12 +91,11 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void should_ThrowException_When_Invalid_User_Data() {
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(user));
-        try {
-            CustomSuccessResponse<LoginUserDto> response = authService.login(incorrecrtAuthDTO);
-        } catch (CustomException e) {
-            assertEquals(ValidationConstants.USER_NOT_FOUND, e.getMessage());
-        }
+    void shouldThrowException_WhenInvalidUserData() {
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+        CustomException thrown = assertThrows(CustomException.class, () -> authService.login(incorrecrtAuthDTO));
+
+        assertEquals(ValidationConstants.USER_NOT_FOUND, thrown.getMessage());
     }
 }

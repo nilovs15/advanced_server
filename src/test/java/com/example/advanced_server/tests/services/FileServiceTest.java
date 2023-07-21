@@ -5,11 +5,9 @@ import com.example.advanced_server.service.impl.FileServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 
@@ -21,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class FileServiceTest {
 
     @Test
-    void success_UploadFile() throws IOException {
+    void successUploadFile() throws IOException {
         FileServiceImpl fileService = new FileServiceImpl();
 
         MockMultipartFile file = new MockMultipartFile("file",
@@ -33,7 +31,7 @@ class FileServiceTest {
     }
 
     @Test
-    void success_GetFile() throws IOException {
+    void successGetFile() throws IOException {
         FileServiceImpl fileService = new FileServiceImpl();
 
         MockMultipartFile file = new MockMultipartFile("file",

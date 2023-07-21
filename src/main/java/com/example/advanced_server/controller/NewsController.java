@@ -40,11 +40,10 @@ public class NewsController {
     }
 
     @GetMapping
-    public ResponseEntity getNews(
-                                    @Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
-                                    @RequestParam(defaultValue = "3") Integer perPage) {
+    public ResponseEntity getNews(@Min(value = 1, message = ValidationConstants.TASKS_PAGE_GREATER_OR_EQUAL_1)
+                                  @RequestParam(defaultValue = "1") Integer page,
+                                  @Min(value = 1, message = ValidationConstants.TASKS_PER_PAGE_GREATER_OR_EQUAL_1)
+                                  @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.getNews(page, perPage));
     }
 
@@ -60,11 +59,11 @@ public class NewsController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity findNews( @RequestParam(required = false) String author,
-                                    @RequestParam(required = false) String keyword,
-                                    @RequestParam(required = false) List<String> tags,
-                                    @RequestParam(defaultValue = "1") Integer page,
-                                    @RequestParam(defaultValue = "3") Integer perPage) {
+    public ResponseEntity findNews(@RequestParam(required = false) String author,
+                                   @RequestParam(required = false) String keyword,
+                                   @RequestParam(required = false) List<String> tags,
+                                   @RequestParam(defaultValue = "1") Integer page,
+                                   @RequestParam(defaultValue = "3") Integer perPage) {
         return ResponseEntity.ok(newsService.findNews(author, keyword, tags, page, perPage));
     }
 

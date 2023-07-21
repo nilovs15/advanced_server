@@ -3,8 +3,11 @@ package com.example.advanced_server.tests.services;
 import com.example.advanced_server.dto.BaseSuccessResponse;
 import com.example.advanced_server.dto.CustomSuccessResponse;
 import com.example.advanced_server.dto.newsDto.CreateNewsSuccessResponse;
+import com.example.advanced_server.dto.newsDto.NewsDto;
 import com.example.advanced_server.dto.newsDto.PageableResponse;
 import com.example.advanced_server.entity.NewsEntity;
+import com.example.advanced_server.exception.CustomException;
+import com.example.advanced_server.exception.ValidationConstants;
 import com.example.advanced_server.repository.NewsRepository;
 import com.example.advanced_server.repository.UserRepository;
 import com.example.advanced_server.service.impl.NewsServiceImpl;
@@ -20,13 +23,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
-import static com.example.advanced_server.tests.services.TestsConstants.changedNewsDto;
-import static com.example.advanced_server.tests.services.TestsConstants.news;
-import static com.example.advanced_server.tests.services.TestsConstants.newsDto;
-import static com.example.advanced_server.tests.services.TestsConstants.user;
+import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,6 +57,8 @@ class NewsServiceImplTest {
 
     @MockBean
     NewsRepository newsRepository;
+
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     void successCreateNews() {
@@ -146,5 +155,21 @@ class NewsServiceImplTest {
         assertEquals(response.getStatusCode(), 1);
 
         verify(newsRepository, times(1)).deleteById(news.getId());
+    }
+
+    @Test
+    void testWhenDescriptionIsNull() {
+        when(newsRepository.findById(news.getId())).thenReturn(Optional.of(news));
+        Set<ConstraintViolation<NewsDto>> violations = validator.validate(incorrectChangedNewsDto);
+        assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void shouldThrowException_WhenInvalidUserId() {
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        CustomException thrown = assertThrows(CustomException.class,
+                () ->  newsService.createNews(UUID.randomUUID(), newsDto));
+
+        assertEquals(ValidationConstants.USER_NOT_FOUND, thrown.getMessage());
     }
 }

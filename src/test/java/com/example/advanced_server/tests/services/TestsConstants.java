@@ -1,5 +1,8 @@
 package com.example.advanced_server.tests.services;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.example.advanced_server.dto.authDto.AuthDTO;
 import com.example.advanced_server.dto.authDto.RegisterUserDTO;
 import com.example.advanced_server.dto.newsDto.NewsDto;
@@ -8,12 +11,6 @@ import com.example.advanced_server.entity.NewsEntity;
 import com.example.advanced_server.entity.TagEntity;
 import com.example.advanced_server.entity.UserEntity;
 import com.example.advanced_server.mappers.UserEntityMapper;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.Email;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 public interface TestsConstants {
     NewsDto newsDto = new NewsDto()
@@ -66,6 +63,12 @@ public interface TestsConstants {
 
     NewsDto changedNewsDto = new NewsDto()
             .setDescription("putDesc")
+            .setTitle("putTitle")
+            .setImage("putImage")
+            .setTags(List.of("putTag1"));
+
+    NewsDto incorrectChangedNewsDto = new NewsDto()
+            .setDescription("")
             .setTitle("putTitle")
             .setImage("putImage")
             .setTags(List.of("putTag1"));

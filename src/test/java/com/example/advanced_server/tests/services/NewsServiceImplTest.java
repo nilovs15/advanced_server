@@ -3,6 +3,7 @@ package com.example.advanced_server.tests.services;
 import com.example.advanced_server.dto.BaseSuccessResponse;
 import com.example.advanced_server.dto.CustomSuccessResponse;
 import com.example.advanced_server.dto.newsDto.CreateNewsSuccessResponse;
+import com.example.advanced_server.dto.newsDto.GetNewOutDto;
 import com.example.advanced_server.dto.newsDto.NewsDto;
 import com.example.advanced_server.dto.newsDto.PageableResponse;
 import com.example.advanced_server.entity.NewsEntity;
@@ -31,11 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.advanced_server.tests.services.TestsConstants.changedNewsDto;
-import static com.example.advanced_server.tests.services.TestsConstants.incorrectChangedNewsDto;
-import static com.example.advanced_server.tests.services.TestsConstants.news;
-import static com.example.advanced_server.tests.services.TestsConstants.newsDto;
-import static com.example.advanced_server.tests.services.TestsConstants.user;
+import static com.example.advanced_server.tests.services.TestsConstants.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,6 +61,10 @@ class NewsServiceImplTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+    private GetNewOutDto getFirstNewsData(CustomSuccessResponse<PageableResponse> response) {
+        return response.getData().getContent().get(0);
+    }
+
     @Test
     void successCreateNews() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
@@ -91,12 +92,12 @@ class NewsServiceImplTest {
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
-        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
-        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
-        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
-        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
-        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
-        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+        assertEquals(getFirstNewsData(response).getTitle(), news.getTitle());
+        assertEquals(getFirstNewsData(response).getId(), news.getId());
+        assertEquals(getFirstNewsData(response).getDescription(), news.getDescription());
+        assertEquals(getFirstNewsData(response).getImage(), news.getImage());
+        assertEquals(getFirstNewsData(response).getUsername(), news.getUsername());
+        assertEquals(getFirstNewsData(response).getTags().get(0).getTitle(),
                 news.getTags().get(0).getTitle());
 
         verify(newsRepository, times(1)).findAll(pageable);
@@ -119,12 +120,12 @@ class NewsServiceImplTest {
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
-        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
-        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
-        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
-        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
-        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
-        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+        assertEquals(getFirstNewsData(response).getTitle(), news.getTitle());
+        assertEquals(getFirstNewsData(response).getId(), news.getId());
+        assertEquals(getFirstNewsData(response).getDescription(), news.getDescription());
+        assertEquals(getFirstNewsData(response).getImage(), news.getImage());
+        assertEquals(getFirstNewsData(response).getUsername(), news.getUsername());
+        assertEquals(getFirstNewsData(response).getTags().get(0).getTitle(),
                 news.getTags().get(0).getTitle());
 
         verify(newsRepository, times(1)).findNewsByUserId(pageable, user.getId());
@@ -148,12 +149,12 @@ class NewsServiceImplTest {
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
-        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
-        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
-        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
-        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
-        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
-        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+        assertEquals(getFirstNewsData(response).getTitle(), news.getTitle());
+        assertEquals(getFirstNewsData(response).getId(), news.getId());
+        assertEquals(getFirstNewsData(response).getDescription(), news.getDescription());
+        assertEquals(getFirstNewsData(response).getImage(), news.getImage());
+        assertEquals(getFirstNewsData(response).getUsername(), news.getUsername());
+        assertEquals(getFirstNewsData(response).getTags().get(0).getTitle(),
                 news.getTags().get(0).getTitle());
 
         verify(newsRepository, times(1))
@@ -196,7 +197,7 @@ class NewsServiceImplTest {
     void shouldThrowException_WhenInvalidUserId() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         CustomException thrown = assertThrows(CustomException.class,
-                () ->  newsService.createNews(UUID.randomUUID(), newsDto));
+                () -> newsService.createNews(UUID.randomUUID(), newsDto));
 
         assertEquals(ValidationConstants.USER_NOT_FOUND, thrown.getMessage());
     }

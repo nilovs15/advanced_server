@@ -27,7 +27,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static com.example.advanced_server.tests.services.TestsConstants.incorrectPutUserDto;
+import static com.example.advanced_server.tests.services.TestsConstants.putUserDto;
+import static com.example.advanced_server.tests.services.TestsConstants.user;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -53,6 +55,10 @@ class UserServiceImplTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+    private PublicUserView getFirstUserData(CustomSuccessResponse<List<PublicUserView>> response) {
+        return response.getData().get(0);
+    }
+
     @Test
     void successGetAllUserInfo() {
 
@@ -62,16 +68,16 @@ class UserServiceImplTest {
 
         assertTrue(response.isSuccess());
         assertEquals(response.getStatusCode(), 1);
-        assertNotNull(response.getData().get(0).getId());
-        assertNotNull(response.getData().get(0).getName());
-        assertNotNull(response.getData().get(0).getRole());
-        assertNotNull(response.getData().get(0).getEmail());
-        assertNotNull(response.getData().get(0).getAvatar());
+        assertNotNull(getFirstUserData(response).getId());
+        assertNotNull(getFirstUserData(response).getName());
+        assertNotNull(getFirstUserData(response).getRole());
+        assertNotNull(getFirstUserData(response).getEmail());
+        assertNotNull(getFirstUserData(response).getAvatar());
 
-        assertEquals(response.getData().get(0).getName(), user.getName());
-        assertEquals(response.getData().get(0).getRole(), user.getRole());
-        assertEquals(response.getData().get(0).getEmail(), user.getEmail());
-        assertEquals(response.getData().get(0).getAvatar(), user.getAvatar());
+        assertEquals(getFirstUserData(response).getName(), user.getName());
+        assertEquals(getFirstUserData(response).getRole(), user.getRole());
+        assertEquals(getFirstUserData(response).getEmail(), user.getEmail());
+        assertEquals(getFirstUserData(response).getAvatar(), user.getAvatar());
 
         verify(userRepository, times(1)).findAll();
     }

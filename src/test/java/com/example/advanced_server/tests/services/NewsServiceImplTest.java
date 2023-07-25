@@ -32,7 +32,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static com.example.advanced_server.tests.services.TestsConstants.changedNewsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.incorrectChangedNewsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.news;
+import static com.example.advanced_server.tests.services.TestsConstants.newsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.page;
+import static com.example.advanced_server.tests.services.TestsConstants.perPage;
+import static com.example.advanced_server.tests.services.TestsConstants.successStatusCode;
+import static com.example.advanced_server.tests.services.TestsConstants.user;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,23 +79,23 @@ class NewsServiceImplTest {
         CreateNewsSuccessResponse response = newsService.createNews(user.getId(), newsDto);
 
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode, response.getStatusCode());
 
         verify(newsRepository, times(1)).save(any(NewsEntity.class));
     }
 
     @Test
     void successGetNews() {
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(page - 1, perPage);
         List<NewsEntity> allNews = List.of(news);
         Page<NewsEntity> newsInPage = new PageImpl<NewsEntity>(allNews, pageable, allNews.size());
 
         when(newsRepository.findAll(pageable)).thenReturn(newsInPage);
 
-        CustomSuccessResponse<PageableResponse> response = newsService.getNews(1, 3);
+        CustomSuccessResponse<PageableResponse> response = newsService.getNews(page, perPage);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
@@ -107,16 +114,16 @@ class NewsServiceImplTest {
     void successGetUserNews() {
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(page - 1, perPage);
         List<NewsEntity> allNews = List.of(news);
         Page<NewsEntity> newsInPage = new PageImpl<NewsEntity>(allNews, pageable, allNews.size());
 
         when(newsRepository.findNewsByUserId(pageable, user.getId())).thenReturn(newsInPage);
 
-        CustomSuccessResponse<PageableResponse> response = newsService.getUserNews(user.getId(), 1, 3);
+        CustomSuccessResponse<PageableResponse> response = newsService.getUserNews(user.getId(), page, perPage);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
@@ -133,7 +140,7 @@ class NewsServiceImplTest {
 
     @Test
     void successFindNews() {
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(page - 1, perPage);
         List<NewsEntity> allNews = List.of(news);
         Page<NewsEntity> newsInPage = new PageImpl<NewsEntity>(allNews, pageable, allNews.size());
 
@@ -142,10 +149,10 @@ class NewsServiceImplTest {
                 .thenReturn(newsInPage);
 
         CustomSuccessResponse<PageableResponse> response = newsService.findNews(
-                user.getName(), "t", List.of(news.getTags().get(0).getTitle()), 1, 3);
+                user.getName(), "t", List.of(news.getTags().get(0).getTitle()), page, perPage);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
@@ -168,7 +175,7 @@ class NewsServiceImplTest {
         BaseSuccessResponse response = newsService.changeNews(news.getId(), changedNewsDto);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
 
         verify(newsRepository, times(1)).findById(any());
         verify(newsRepository, times(1)).save(any(NewsEntity.class));
@@ -181,7 +188,7 @@ class NewsServiceImplTest {
         BaseSuccessResponse response = newsService.deleteNews(news.getId());
 
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode, response.getStatusCode());
 
         verify(newsRepository, times(1)).deleteById(news.getId());
     }

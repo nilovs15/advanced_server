@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import static com.example.advanced_server.tests.services.TestsConstants.incorrectPutUserDto;
 import static com.example.advanced_server.tests.services.TestsConstants.putUserDto;
+import static com.example.advanced_server.tests.services.TestsConstants.successStatusCode;
 import static com.example.advanced_server.tests.services.TestsConstants.user;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -67,7 +68,7 @@ class UserServiceImplTest {
         CustomSuccessResponse<List<PublicUserView>> response = userService.getAllUserInfo();
 
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(getFirstUserData(response).getId());
         assertNotNull(getFirstUserData(response).getName());
         assertNotNull(getFirstUserData(response).getRole());
@@ -90,7 +91,7 @@ class UserServiceImplTest {
         CustomSuccessResponse<PublicUserView> response = userService.getInfoById(user.getId());
 
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData().getId());
         assertNotNull(response.getData().getName());
         assertNotNull(response.getData().getRole());
@@ -123,7 +124,7 @@ class UserServiceImplTest {
         CustomSuccessResponse<PublicUserView> response = userService.getUserInfo(user.getId());
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData().getAvatar());
         assertNotNull(response.getData().getId());
         assertNotNull(response.getData().getEmail());
@@ -148,7 +149,7 @@ class UserServiceImplTest {
         CustomSuccessResponse<PutUserDtoResponse> response = userService.replaceUser(user.getId(), putUserDto);
 
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode, response.getStatusCode());
         assertNotNull(response.getData());
 
         assertEquals(response.getData().getName(), putUserDto.getName());
@@ -173,7 +174,7 @@ class UserServiceImplTest {
         BaseSuccessResponse response = userService.deleteUser(user.getId());
 
         assertTrue(response.isSuccess());
-        assertEquals(1, (int) response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
 
         verify(userRepository, times(1)).deleteById(user.getId());
     }

@@ -72,4 +72,10 @@ public interface TestsConstants {
             .setTitle("putTitle")
             .setImage("putImage")
             .setTags(List.of("putTag1"));
+
+    Integer successStatusCode = 1;
+
+    Integer page = 1;
+
+    Integer perPage = 3;
 }

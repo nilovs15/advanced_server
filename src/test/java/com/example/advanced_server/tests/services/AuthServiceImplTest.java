@@ -20,7 +20,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static com.example.advanced_server.tests.services.TestsConstants.authDTO;
+import static com.example.advanced_server.tests.services.TestsConstants.incorrecrtAuthDTO;
+import static com.example.advanced_server.tests.services.TestsConstants.registerUserDTO;
+import static com.example.advanced_server.tests.services.TestsConstants.successStatusCode;
+import static com.example.advanced_server.tests.services.TestsConstants.user;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,7 +63,7 @@ class AuthServiceImplTest {
         CustomSuccessResponse<LoginUserDto> response = authService.register(registerUserDTO);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
 
         assertNotNull(response.getData().getId());
         assertNotNull(response.getData().getAvatar());
@@ -84,7 +88,7 @@ class AuthServiceImplTest {
         CustomSuccessResponse<LoginUserDto> response = authService.login(authDTO);
 
         assertTrue(response.isSuccess());
-        assertEquals(1, response.getStatusCode());
+        assertEquals(successStatusCode, response.getStatusCode());
 
         assertNotNull(response.getData().getAvatar());
         assertNotNull(response.getData().getEmail());

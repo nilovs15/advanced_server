@@ -11,6 +11,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 
+import static com.example.advanced_server.tests.services.TestsConstants.successStatusCode;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +32,7 @@ class FileServiceTest {
         CustomSuccessResponse response = fileService.uploadFile(file);
         assertNotNull(response.getData());
         assertTrue(response.isSuccess());
-        assertEquals(response.getStatusCode(), 1);
+        assertEquals(successStatusCode , response.getStatusCode());
     }
 
     @Test

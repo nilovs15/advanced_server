@@ -68,6 +68,11 @@ class UserServiceImplTest {
         assertNotNull(response.getData().get(0).getEmail());
         assertNotNull(response.getData().get(0).getAvatar());
 
+        assertEquals(response.getData().get(0).getName(), user.getName());
+        assertEquals(response.getData().get(0).getRole(), user.getRole());
+        assertEquals(response.getData().get(0).getEmail(), user.getEmail());
+        assertEquals(response.getData().get(0).getAvatar(), user.getAvatar());
+
         verify(userRepository, times(1)).findAll();
     }
 
@@ -85,6 +90,11 @@ class UserServiceImplTest {
         assertNotNull(response.getData().getRole());
         assertNotNull(response.getData().getEmail());
         assertNotNull(response.getData().getAvatar());
+
+        assertEquals(response.getData().getName(), user.getName());
+        assertEquals(response.getData().getRole(), user.getRole());
+        assertEquals(response.getData().getEmail(), user.getEmail());
+        assertEquals(response.getData().getAvatar(), user.getAvatar());
 
         verify(userRepository, times(1)).findById(user.getId());
     }
@@ -114,6 +124,11 @@ class UserServiceImplTest {
         assertNotNull(response.getData().getName());
         assertNotNull(response.getData().getRole());
 
+        assertEquals(response.getData().getName(), user.getName());
+        assertEquals(response.getData().getRole(), user.getRole());
+        assertEquals(response.getData().getEmail(), user.getEmail());
+        assertEquals(response.getData().getAvatar(), user.getAvatar());
+
         verify(userRepository, times(1)).findById(user.getId());
     }
 
@@ -129,6 +144,11 @@ class UserServiceImplTest {
         assertTrue(response.isSuccess());
         assertEquals(response.getStatusCode(), 1);
         assertNotNull(response.getData());
+
+        assertEquals(response.getData().getName(), putUserDto.getName());
+        assertEquals(response.getData().getRole(), putUserDto.getRole());
+        assertEquals(response.getData().getEmail(), putUserDto.getEmail());
+        assertEquals(response.getData().getAvatar(), putUserDto.getAvatar());
 
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(userRepository, times(1)).findById(user.getId());

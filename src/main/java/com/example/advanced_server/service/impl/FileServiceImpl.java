@@ -19,9 +19,11 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    private String uploadDir = "/home/dunice/newAfterDelete/files/";
+    @Value("${spring.servlet.multipart.location}")
+    private String uploadDir;
 
-    private String fileUrl = "http://localhost:8080/v1/file/";
+    @Value("${server.fileUrl}")
+    private String fileUrl;
 
     private Path root = Paths.get("files/").toAbsolutePath();
 

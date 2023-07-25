@@ -31,7 +31,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.example.advanced_server.tests.services.TestsConstants.*;
+import static com.example.advanced_server.tests.services.TestsConstants.changedNewsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.incorrectChangedNewsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.news;
+import static com.example.advanced_server.tests.services.TestsConstants.newsDto;
+import static com.example.advanced_server.tests.services.TestsConstants.user;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,7 +71,7 @@ class NewsServiceImplTest {
         CreateNewsSuccessResponse response = newsService.createNews(user.getId(), newsDto);
 
         assertTrue(response.isSuccess());
-        assertTrue(response.getStatusCode().equals(1));
+        assertEquals(response.getStatusCode(), 1);
 
         verify(newsRepository, times(1)).save(any(NewsEntity.class));
     }
@@ -86,6 +90,14 @@ class NewsServiceImplTest {
         assertEquals(1, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
+
+        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
+        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
+        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
+        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
+        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
+        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+                news.getTags().get(0).getTitle());
 
         verify(newsRepository, times(1)).findAll(pageable);
     }
@@ -107,6 +119,14 @@ class NewsServiceImplTest {
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
 
+        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
+        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
+        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
+        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
+        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
+        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+                news.getTags().get(0).getTitle());
+
         verify(newsRepository, times(1)).findNewsByUserId(pageable, user.getId());
     }
 
@@ -127,6 +147,14 @@ class NewsServiceImplTest {
         assertEquals(1, response.getStatusCode());
         assertNotNull(response.getData().getContent());
         assertNotNull(response.getData().getNumberOfElements());
+
+        assertEquals(response.getData().getContent().get(0).getTitle(), news.getTitle());
+        assertEquals(response.getData().getContent().get(0).getId(), news.getId());
+        assertEquals(response.getData().getContent().get(0).getDescription(), news.getDescription());
+        assertEquals(response.getData().getContent().get(0).getImage(), news.getImage());
+        assertEquals(response.getData().getContent().get(0).getUsername(), news.getUsername());
+        assertEquals(response.getData().getContent().get(0).getTags().get(0).getTitle(),
+                news.getTags().get(0).getTitle());
 
         verify(newsRepository, times(1))
                 .findNewsByParam(anyString(), anyString(), anyList(), any());

@@ -23,7 +23,8 @@ import java.util.Optional;
 import static com.example.advanced_server.tests.services.TestsConstants.*;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.times;
@@ -66,6 +67,11 @@ class AuthServiceImplTest {
         assertNotNull(response.getData().getName());
         assertNotNull(response.getData().getToken());
 
+        assertEquals(response.getData().getAvatar(), registerUserDTO.getAvatar());
+        assertEquals(response.getData().getEmail(), registerUserDTO.getEmail());
+        assertEquals(response.getData().getName(), registerUserDTO.getName());
+        assertEquals(response.getData().getRole(), registerUserDTO.getRole());
+
         verify(userRepository, times(1)).save(ArgumentMatchers.any(UserEntity.class));
         verify(userRepository, times(1)).findByEmail(registerUserDTO.getEmail());
     }
@@ -86,6 +92,11 @@ class AuthServiceImplTest {
         assertNotNull(response.getData().getName());
         assertNotNull(response.getData().getRole());
         assertNotNull(response.getData().getToken());
+
+        assertEquals(response.getData().getEmail(), user.getEmail());
+        assertEquals(response.getData().getAvatar(), user.getAvatar());
+        assertEquals(response.getData().getName(), user.getName());
+        assertEquals(response.getData().getRole(), user.getRole());
 
         verify(userRepository, times(1)).findByEmail(authDTO.getEmail());
     }

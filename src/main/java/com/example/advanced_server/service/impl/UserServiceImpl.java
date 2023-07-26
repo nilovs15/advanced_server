@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     public CustomSuccessResponse<PublicUserView> getInfoById(UUID id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
-                new CustomException(ValidationConstants.MAX_UPLOAD_SIZE_EXCEEDED));
+                new CustomException(ValidationConstants.USER_NOT_FOUND));
         PublicUserView publicUserView = PublicUserViewMapper.INSTANCE.userEntityToPublicUserView(user);
         return CustomSuccessResponse.getResponse(publicUserView);
     }
@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ValidationConstants.USER_ALREADY_EXISTS);
         }
         UserEntity newUser = PutUserDtoToEntityMapper.INSTANCE.putUserDtoToUserEntity(putUserDto)
-                    .setAvatar(putUserDto.getAvatar())
                     .setId(user.getId())
                     .setPassword(user.getPassword());
 

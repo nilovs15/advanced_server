@@ -8,9 +8,11 @@ import javax.validation.constraints.Size;
 import com.example.advanced_server.exception.ValidationConstants;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class PutUserDto {
     private String avatar;
 

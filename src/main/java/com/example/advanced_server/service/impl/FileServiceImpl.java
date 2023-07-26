@@ -28,7 +28,7 @@ public class FileServiceImpl implements FileService {
     private Path root = Paths.get("files/").toAbsolutePath();
 
     @Override
-    public CustomSuccessResponse uploadFile(MultipartFile file) throws IOException {
+    public CustomSuccessResponse<String> uploadFile(MultipartFile file) throws IOException {
         String fileName = UUID.randomUUID() + "." + file.getOriginalFilename();
         Path copyLocation = Paths.get(uploadDir + File.separator + fileName);
         Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
